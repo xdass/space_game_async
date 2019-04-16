@@ -1,27 +1,45 @@
 from collections import namedtuple
 from curses_tools import draw_frame, read_controls, get_frame_size
+from helpers.physics import update_speed
+from helpers.tools import load_ship_frames
 import asyncio
 
 
 GameField = namedtuple("GameField", "x1 y1 x2 y2")
 SpaceShip = namedtuple("SpaceShip", "x1 y1 x2 y2")
 
+spaceship_frame = ""
 
-async def animate_spaceship(canvas, frames):
+
+async def run_spaceship(canvas):
+    # Положение корабля и отрисовка
+    global spaceship_frame
     max_row, max_col = canvas.getmaxyx()
-    frame_max_row, frame_max_col = get_frame_size(frames[0])
+
+    frame_max_row, frame_max_col = get_frame_size(load_ship_frames()[0])
     row = max_row - (frame_max_row + 1)
     col = max_col // 2
-    while True:
-        dy, dx, space = read_controls(canvas)
-        new_col = col + dx
-        new_row = row + dy
-        if 0 < new_col < (max_col - frame_max_col):
-            col += dx
-        if 0 < new_row < (max_row - frame_max_row):
-            row += dy
+    row_speed = col_speed = 0
 
-        for frame in frames:
-            draw_frame(canvas, row, col, frame)
-            await asyncio.sleep(0)
-            draw_frame(canvas, row, col, frame, negative=True)
+    while True:
+        drow, dcol, space = read_controls(canvas)
+
+        row_speed, col_speed = update_speed(row_speed, col_speed, drow, dcol)
+
+        if 1 < col + col_speed < (max_col - frame_max_col):
+            col += col_speed
+        if 1 < row + row_speed < (max_row - frame_max_row):
+            row += row_speed
+
+        draw_frame(canvas, row, col, spaceship_frame)
+        await asyncio.sleep(0)
+        draw_frame(canvas, row, col, spaceship_frame, negative=True)
+
+
+async def animate_spaceship(canvas):
+    # Обновляет spaceship frame
+    global spaceship_frame
+    frames = load_ship_frames()
+    spaceship_frame = frames[0]
+    await run_spaceship(canvas)
+    spaceship_frame = frames[1]

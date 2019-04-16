@@ -1,6 +1,6 @@
 from animations.fire_animation import fire
 from animations.stars_animation import blink
-from animations.spaceship_animation import animate_spaceship
+from animations.spaceship_animation import animate_spaceship, run_spaceship
 from animations.fill_orbit import fill_orbit_with_garbage
 import time
 from random import randint, choice
@@ -29,11 +29,10 @@ def draw(canvas):
     canvas.nodelay(True)
     canvas.border()
 
-    ship_frames = load_ship_frames()
     row, col = get_window_size()
-    coroutines.append(animate_spaceship(canvas, ship_frames))
     coroutines.extend([blink(canvas, randint(1, row-2), randint(1, col-2), get_star()) for _ in range(STARS_AMOUNT)])
-    coroutines.extend(fill_orbit_with_garbage(canvas) for _ in range(1, 5))
+    coroutines.append(animate_spaceship(canvas))
+    # coroutines.extend(fill_orbit_with_garbage(canvas) for _ in range(0, 4))
 
     while True:
         for coroutine in coroutines:
@@ -43,16 +42,6 @@ def draw(canvas):
             except StopIteration:
                 coroutines.remove(coroutine)
         time.sleep(TIC_TIMEOUT)
-
-
-def load_ship_frames():
-    with open("./sprites/rocket_frame_1.txt") as fh:
-        frame_1 = fh.read()
-
-    with open("./sprites/rocket_frame_2.txt") as fh:
-        frame_2 = fh.read()
-
-    return frame_1, frame_2
 
 
 def main():
