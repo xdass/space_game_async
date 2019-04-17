@@ -31,7 +31,7 @@ def draw(canvas):
     coroutines.extend([blink(canvas, randint(1, row-2), randint(1, col-2), get_star()) for _ in range(STARS_AMOUNT)])
     coroutines.append(animate_spaceship())
     coroutines.append(run_spaceship(canvas, coroutines))
-    # coroutines.extend(fill_orbit_with_garbage(canvas) for _ in range(0, 4))
+    coroutines.extend(fill_orbit_with_garbage(canvas) for _ in range(0, 4))
 
     while True:
         for coroutine in coroutines:
