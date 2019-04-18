@@ -1,3 +1,4 @@
+from globalvars import obstacles
 import asyncio
 import curses
 

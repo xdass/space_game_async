@@ -5,6 +5,7 @@ from animations.spaceship_animation import animate_spaceship, run_spaceship
 from animations.fill_orbit import fill_orbit_with_garbage
 import curses
 from curses import curs_set
+from curses_tools import draw_frame
 from obstacles import show_obstacles
 from globalvars import coroutines, obstacles
 
@@ -25,7 +26,6 @@ def get_star():
 
 
 def draw(canvas):
-    global coroutines
     curs_set(False)
     canvas.nodelay(True)
     canvas.border()

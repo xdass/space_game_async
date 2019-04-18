@@ -1,0 +1,2 @@
+obstacles = list()
+coroutines = list()
