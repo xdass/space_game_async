@@ -1,14 +1,17 @@
+import time
+from random import randint, choice
 from animations.stars_animation import blink
 from animations.spaceship_animation import animate_spaceship, run_spaceship
 from animations.fill_orbit import fill_orbit_with_garbage
-import time
-from random import randint, choice
 import curses
 from curses import curs_set
+from obstacles import show_obstacles
+from globalvars import coroutines, obstacles
+
 
 TIC_TIMEOUT = 0.1
 STARS_AMOUNT = 120
-coroutines = list()
+# coroutines = list()
 
 
 def get_window_size():
@@ -30,8 +33,9 @@ def draw(canvas):
     row, col = get_window_size()
     coroutines.extend([blink(canvas, randint(1, row-2), randint(1, col-2), get_star()) for _ in range(STARS_AMOUNT)])
     coroutines.append(animate_spaceship())
-    coroutines.append(run_spaceship(canvas, coroutines))
-    coroutines.extend(fill_orbit_with_garbage(canvas) for _ in range(0, 4))
+    coroutines.append(run_spaceship(canvas))
+    coroutines.append(show_obstacles(canvas, obstacles))
+    coroutines.append(fill_orbit_with_garbage(canvas))
 
     while True:
         for coroutine in coroutines:

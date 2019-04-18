@@ -3,6 +3,7 @@ from curses_tools import draw_frame, read_controls, get_frame_size
 from animations.fire_animation import fire
 from helpers.physics import update_speed
 from helpers.tools import load_ship_frames
+from globalvars import coroutines
 import asyncio
 
 
@@ -12,7 +13,7 @@ SpaceShip = namedtuple("SpaceShip", "x1 y1 x2 y2")
 spaceship_frame = ""
 
 
-async def run_spaceship(canvas, coroutines):
+async def run_spaceship(canvas):
     # Положение корабля и отрисовка
     global spaceship_frame
     max_row, max_col = canvas.getmaxyx()
