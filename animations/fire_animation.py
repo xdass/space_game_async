@@ -1,4 +1,4 @@
-from globalvars import obstacles
+from globalvars import obstacles, obstacles_in_last_collisions
 import asyncio
 import curses
 
@@ -31,3 +31,7 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
         canvas.addstr(round(row), round(column), ' ')
         row += rows_speed
         column += columns_speed
+        for obstacle in obstacles:
+            if obstacle.has_collision(round(row), round(column)):
+                obstacles_in_last_collisions.append(obstacle)
+                return
