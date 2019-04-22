@@ -1,24 +1,13 @@
 from curses_tools import draw_frame, read_controls, get_frame_size
 from animations.fire_animation import fire
+from game_scenario import show_gameover
 from helpers.physics import update_speed
 from helpers.tools import load_frames
-from globalvars import coroutines, obstacles
+from globalvars import coroutines, obstacles, year
 import asyncio
 
 
 spaceship_frame = ""
-
-
-async def show_gameover(canvas):
-    max_row, max_col = canvas.getmaxyx()
-    gameover_frame = load_frames("gameover")
-    frame_max_row, frame_max_col = get_frame_size(gameover_frame[0])
-    row = max_row // 2 - (frame_max_row // 2)
-    col = max_col // 2 - (frame_max_col // 2)
-    while True:
-        draw_frame(canvas, row, col, gameover_frame[0])
-        await asyncio.sleep(0)
-        draw_frame(canvas, row, col, gameover_frame[0])
 
 
 async def run_spaceship(canvas):
@@ -33,15 +22,15 @@ async def run_spaceship(canvas):
 
     while True:
         drow, dcol, space = read_controls(canvas)
-
+        border = 1
         row_speed, col_speed = update_speed(row_speed, col_speed, drow, dcol)
 
-        if 1 < col + col_speed < (max_col - frame_max_col):
+        if border < (col + col_speed) < (max_col - frame_max_col - border):
             col += col_speed
-        if 1 < row + row_speed < (max_row - frame_max_row):
+        if border < (row + row_speed) < (max_row - frame_max_row - border):
             row += row_speed
 
-        if space:
+        if space and (year["year"] >= 2020):
             coroutines.append(fire(canvas, row, col+2))
 
         for obstacle in obstacles:
