@@ -16,7 +16,7 @@ Note: The game works correctly on Linux based systems
 
 
 ### Program output example
-<img src="https://ibb.co/XJ5mtrj" border="0">
+<img src="https://i.ibb.co/rypnHRF/gameplay.png" alt="gameplay" border="0">
 ### Project Goals
 
 The code is writtn for educational purposes on online-course for web-developers [dvmn.org](https://dvmn.org/).
