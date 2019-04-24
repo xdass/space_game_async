@@ -30,7 +30,7 @@ async def run_spaceship(canvas):
         if border < (row + row_speed) < (max_row - frame_max_row - border):
             row += row_speed
 
-        if space and (year["year"] >= 2020):
+        if space and (year >= 2020):
             coroutines.append(fire(canvas, row, col+2))
 
         for obstacle in obstacles:
@@ -48,8 +48,9 @@ async def animate_spaceship():
     # Обновляет spaceship frame
     global spaceship_frame
     frames = load_frames("rocket")
+    frame_1, frame_2 = frames
     while True:
-        spaceship_frame = frames[0]
+        spaceship_frame = frame_1
         await asyncio.sleep(0)
-        spaceship_frame = frames[1]
+        spaceship_frame = frame_2
         await asyncio.sleep(0)
