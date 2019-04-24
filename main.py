@@ -1,7 +1,7 @@
 from animations.stars_animation import blink
 from animations.spaceship_animation import animate_spaceship, run_spaceship
 from obstacles import show_obstacles
-from globalvars import coroutines, obstacles
+from globalvars import coroutines, obstacles, year
 from game_scenario import start_gameplay
 import time
 from random import randint, choice

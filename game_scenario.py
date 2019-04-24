@@ -7,7 +7,7 @@ import time
 
 PHRASES = {
     # Только на английском, Repl.it ломается на кириллице
-    1957: "First Sputnikirst Sputnikirst Sputnikirst Sputnik",
+    1957: "First Sputnik!",
     1961: "Gagarin flew!",
     1969: "Armstrong got on the moon!",
     1971: "First orbital space station Salute-1",
@@ -49,10 +49,10 @@ def get_garbage_delay_tics(year):
 
 
 async def start_gameplay(canvas):
-    global year
     info_row, info_col = canvas.getmaxyx()
     info_canvas = canvas.derwin(info_row-3, info_col - 50)
     coroutines.append(show_game_info(info_canvas))
+    global year
     while True:
         start = int(time.time())
         delay = get_garbage_delay_tics(year)
