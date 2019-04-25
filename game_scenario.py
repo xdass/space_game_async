@@ -2,7 +2,8 @@ from helpers.tools import sleep
 from animations.space_garbage import fly_garbage
 from curses_tools import draw_frame, get_frame_size
 from helpers.tools import load_frames
-from globalvars import coroutines, year
+from globalvars import coroutines
+import globalvars
 import time
 
 PHRASES = {
@@ -21,14 +22,14 @@ PHRASES = {
 
 async def show_gameover(canvas):
     max_row, max_col = canvas.getmaxyx()
-    gameover_frame = load_frames("gameover")
-    frame_max_row, frame_max_col = get_frame_size(gameover_frame[0])
+    frame = load_frames("gameover")
+    frame_max_row, frame_max_col = get_frame_size(frame)
     row = max_row // 2 - (frame_max_row // 2)
     col = max_col // 2 - (frame_max_col // 2)
     while True:
-        draw_frame(canvas, row, col, gameover_frame[0])
+        draw_frame(canvas, row, col, frame)
         await sleep(1)
-        draw_frame(canvas, row, col, gameover_frame[0])
+        draw_frame(canvas, row, col, frame)
 
 
 def get_garbage_delay_tics(year):
@@ -52,26 +53,24 @@ async def start_gameplay(canvas):
     info_row, info_col = canvas.getmaxyx()
     info_canvas = canvas.derwin(info_row-3, info_col - 50)
     coroutines.append(show_game_info(info_canvas))
-    global year
     while True:
         start = int(time.time())
-        delay = get_garbage_delay_tics(year)
+        delay = get_garbage_delay_tics(globalvars.year)
         if delay:
             await sleep(delay)
             coroutines.append(fly_garbage(canvas))
         else:
             await sleep(15)
         if int(time.time()) - start >= 1:
-            year += 1
+            globalvars.year += 1
 
 
 async def show_game_info(info_canvas):
-    global year
     last_phrase = ""
     info_row, info_col = info_canvas.getmaxyx()
     while True:
-        phrase = PHRASES.get(year, "")
-        draw_frame(info_canvas, 0, info_col-6, text=f"{year}")
+        phrase = PHRASES.get(globalvars.year, "")
+        draw_frame(info_canvas, 0, info_col-6, text=f"{globalvars.year}")
         draw_frame(info_canvas, 1, info_col - len(last_phrase) - 1, text=f"{last_phrase}", negative=True)
         draw_frame(info_canvas, 1, info_col - len(phrase) - 1, text=f"{phrase}")
         last_phrase = phrase

@@ -3,7 +3,8 @@ from animations.fire_animation import fire
 from game_scenario import show_gameover
 from helpers.physics import update_speed
 from helpers.tools import load_frames
-from globalvars import coroutines, obstacles, year
+from globalvars import coroutines, obstacles
+import globalvars
 import asyncio
 
 
@@ -12,16 +13,13 @@ spaceship_frame = ""
 
 async def run_spaceship(canvas):
     # Положение корабля и отрисовка
-    global spaceship_frame, year
+    global spaceship_frame
     max_row, max_col = canvas.getmaxyx()
-
     frame_max_row, frame_max_col = get_frame_size(load_frames("rocket")[0])
     row = max_row - (frame_max_row + 1)
     col = max_col // 2
     row_speed = col_speed = 0
-
     while True:
-        draw_frame(canvas, 1, 1, f"{year}")
         drow, dcol, space = read_controls(canvas)
         border = 1
         row_speed, col_speed = update_speed(row_speed, col_speed, drow, dcol)
@@ -31,7 +29,7 @@ async def run_spaceship(canvas):
         if border < (row + row_speed) < (max_row - frame_max_row - border):
             row += row_speed
 
-        if space and (year >= 1961):
+        if space and (globalvars.year >= 2020):
             coroutines.append(fire(canvas, row, col+2))
 
         for obstacle in obstacles:

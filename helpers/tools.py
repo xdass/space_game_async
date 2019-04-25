@@ -13,5 +13,5 @@ def load_frames(sprites_folder):
     for file in os.listdir(frames_dir):
         with open(os.path.join(frames_dir, file)) as fh:
             frame = fh.read()
-            frames.append(frame)
-    return frames
+        frames.append(frame)
+    return frames if len(frames) > 1 else frames[0]

@@ -1,7 +1,7 @@
 from animations.stars_animation import blink
 from animations.spaceship_animation import animate_spaceship, run_spaceship
 from obstacles import show_obstacles
-from globalvars import coroutines, obstacles, year
+from globalvars import coroutines, obstacles
 from game_scenario import start_gameplay
 import time
 from random import randint, choice
@@ -26,8 +26,8 @@ def draw(canvas):
     row, col = get_window_size()
     coroutines.extend([blink(canvas, randint(1, row - 2), randint(1, col - 2), choice("+*.:"))
                        for _ in range(STARS_AMOUNT)])
-    coroutines.append(start_gameplay(canvas))
     coroutines.append(animate_spaceship())
+    coroutines.append(start_gameplay(canvas))
     coroutines.append(run_spaceship(canvas))
     if SHOW_OBSTACLES_BORDERS:
         coroutines.append(show_obstacles(canvas, obstacles))

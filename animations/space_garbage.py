@@ -6,7 +6,7 @@ from random import randint, choice
 from obstacles import *
 
 
-async def fly_garbage(canvas,speed=0.5):
+async def fly_garbage(canvas, speed=0.5):
     """Animate garbage, flying from top to bottom. Сolumn position will stay same, as specified on start."""
     rows_number, columns_number = canvas.getmaxyx()
     garbage_frames = load_frames("garbages")
